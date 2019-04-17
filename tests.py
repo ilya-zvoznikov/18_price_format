@@ -7,9 +7,21 @@ class FormatPriceTestCase(unittest.TestCase):
         fp = format_price(None)
         self.assertIsNone(fp)
 
+    def test_price_is_zero(self):
+        fp = format_price(0)
+        self.assertEqual(fp, '0')
+
+    def test_price_is_almost_zero(self):
+        fp = format_price(0.00000001)
+        self.assertEqual(fp, '0')
+
+    def test_price_is_str_zero(self):
+        fp = format_price('0')
+        self.assertEqual(fp, '0')
+
     def test_whole_number(self):
         fp = format_price(1234567)
-        self.assertEqual(fp, '1 234 567.00')
+        self.assertEqual(fp, '1 234 567')
 
     def test_float_number(self):
         fp = format_price(3245.659884)
@@ -17,7 +29,7 @@ class FormatPriceTestCase(unittest.TestCase):
 
     def test_negative_number(self):
         fp = format_price(-1234)
-        self.assertEqual(fp, '-1 234.00')
+        self.assertEqual(fp, '-1 234')
 
     def test_string_with_dot(self):
         fp = format_price('3245.376473')

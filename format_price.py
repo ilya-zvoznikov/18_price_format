@@ -2,7 +2,7 @@ import argparse
 import sys
 
 
-def get_price_from_args():
+def get_args():
     parser = argparse.ArgumentParser(
         description='The app outputs a price in formatted form')
     parser.add_argument('price', help='a price to format')
@@ -18,18 +18,21 @@ def get_price_from_args():
 
 
 def format_price(price, precision=2):
-    if not price:
+    if price is None:
         return
-    if isinstance(price, str):
-        price = price.replace(',', '.').replace(' ', '')
     try:
-        return '{0:,.{1}f}'.format(float(price), precision).replace(',', ' ')
+        if isinstance(price, str):
+            price = price.replace(',', '.').replace(' ', '')
+        return '{0:,.{1}f}'.format(
+            float(price),
+            precision,
+        ).replace(',', ' ').replace('.00', '')
     except ValueError:
         return
 
 
 if __name__ == '__main__':
-    not_formatted_price, precision = get_price_from_args()
+    not_formatted_price, precision = get_args()
     formatted_price = format_price(not_formatted_price, precision)
     if formatted_price is None:
         sys.exit("Price can't be output")
