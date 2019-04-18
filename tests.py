@@ -76,6 +76,14 @@ class FormatPriceTestCase(unittest.TestCase):
         fp = format_price(3245.659884, precision)
         self.assertIsNone(fp)
 
+    def test_price_is_bool(self):
+        fp = format_price(True)
+        self.assertIsNone(fp)
+
+    def test_price_is_list(self):
+        fp = format_price([1, 2])
+        self.assertIsNone(fp)
+
 
 if __name__ == '__main__':
     unittest.main()

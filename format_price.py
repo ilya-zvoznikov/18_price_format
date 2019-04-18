@@ -10,7 +10,8 @@ def get_args():
         '--precision',
         '-p',
         help='precision for rounding',
-        type=int
+        type=int,
+        default=2,
     )
 
     args = parser.parse_args()
@@ -20,15 +21,16 @@ def get_args():
 def format_price(price, precision=2):
     if price is None:
         return
-    try:
+    if not isinstance(price, bool):
         if isinstance(price, str):
             price = price.replace(',', '.').replace(' ', '')
-        return '{0:,.{1}f}'.format(
-            float(price),
-            precision,
-        ).replace(',', ' ').replace('.00', '')
-    except ValueError:
-        return
+        try:
+            return '{0:,.{1}f}'.format(
+                float(price),
+                precision,
+            ).replace(',', ' ').replace('.00', '')
+        except (ValueError, TypeError):
+            return
 
 
 if __name__ == '__main__':
